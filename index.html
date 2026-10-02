@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="kk" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ЕНТ Биология - Дайындық веб-қосымшасы</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            },
+            accent: {
+              500: '#6366f1',
+              600: '#4f46e5',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* Custom scrollbar and animations */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(71, 85, 105, 1);
+    }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .option-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .option-btn:active {
+      transform: scale(0.98);
+    }
+    
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white bg-slate-950 text-slate-100">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-30 glass-card border-b border-slate-800/80 px-4 py-3 shadow-lg">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="app.showScreen('welcome')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+          <i class="fa-solid fa-dna text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base md:text-lg leading-tight text-white flex items-center gap-2">
+            ЕНТ Биология
+            <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">2026</span>
+          </h1>
+          <p class="text-xs text-slate-400 hidden sm:block">5 негізгі тақырып бойынша дайындық</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button onclick="app.openTheoryModal()" class="flex items-center gap-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg transition border border-slate-700">
+          <i class="fa-solid fa-book-open text-brand-400"></i>
+          <span class="hidden sm:inline">Конспектілер</span>
+        </button>
+        <button onclick="app.toggleMatrixModal()" id="matrixToggleBtn" class="flex items-center gap-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg transition border border-slate-700">
+          <i class="fa-solid fa-grid-2 text-indigo-400"></i>
+          <span class="hidden sm:inline">Сұрақтар торшасы</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Content Container -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+    <!-- Screen 1: Welcome & Topic Overview -->
+    <section id="screen-welcome" class="space-y-6">
+      <div class="glass-card rounded-2xl p-6 md:p-8 text-center relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-graduation-cap"></i> ҰБТ Биология Онлайн Практикумы
+        </div>
+
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-3">
+          Биологиядан 100% нәтижеге жет!
+        </h2>
+        <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto leading-relaxed mb-6">
+          5 негізгі дәріс тақырыбы бойынша 30 сұрақты шешіп, біліміңді тексер.
+          Қате жіберсең өкінбе, «Қателермен жұмыс» режимінде толық теориялық түсініктеме арқылы 100% меңгеріп шық.
+        </p>
+
+        <!-- Topic Badges Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-left mb-8">
+          <div class="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-circle-nodes"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-slate-200">1. Саңырауқұлақтар патшалығы</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Зең, ашытқы, мукор, қалпақшалылар, қыналар</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-slate-200">2. Өсімдік бөлімдері</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Балдырлар, мохтар, қырықбуындар, ксилема/флоэма</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-lime-500/20 text-lime-400 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-slate-200">3. Дара & Қосжарнақтылар</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Шашақ/кіндік тамыр, камбий, жүйкелену, 3/5 еселік</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-fish"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-slate-200">4. Омыртқасыз & Омыртқалылар</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Буыnayaқтылар, балықтар, қосмекенділер, құстар</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-flask"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-slate-200">5. Су, Элементтер & Көмірсулар</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Моно/ди/полисахаридтер, элементтер, рекордтар</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-slate-200">ҰБТ Режимі</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Қатемен жұмыс + Жылдам конспектілер</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="app.startQuiz('all')" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-white font-bold text-base shadow-xl shadow-brand-600/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play"></i>
+            Тестті бастау (30 сұрақ)
+          </button>
+          <button onclick="app.openTheoryModal()" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-book-bookmark"></i>
+            Теорияны оқу
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 2: Practice Single-Question View Screen -->
+    <section id="screen-quiz" class="hidden space-y-4">
+      
+      <!-- Quiz Progress Header -->
+      <div class="glass-card rounded-2xl p-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+          <span id="quizCategoryBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20 font-semibold">
+            <!-- Dynamic topic badge -->
+          </span>
+          <div class="flex items-center gap-3">
+            <span id="quizQuestionCount" class="text-slate-300 font-semibold">Сұрақ: 1 / 30</span>
+            <span id="quizTimer" class="font-mono bg-slate-800 px-2.5 py-1 rounded-md text-amber-400 border border-slate-700"><i class="fa-regular fa-clock mr-1"></i>00:00</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700/50">
+          <div id="quizProgressBar" class="bg-gradient-to-r from-brand-500 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: 3.33%;"></div>
+        </div>
+      </div>
+
+      <!-- Single Question Card -->
+      <div class="glass-card rounded-2xl p-5 md:p-6 shadow-2xl relative">
+        <div class="min-h-[100px] mb-6">
+          <p id="questionText" class="text-base md:text-lg font-medium text-slate-100 leading-relaxed">
+            <!-- Dynamic question text -->
+          </p>
+        </div>
+
+        <!-- Options Container -->
+        <div id="optionsContainer" class="space-y-3 mb-6">
+          <!-- Dynamic Options A, B, C, D generated here -->
+        </div>
+
+        <!-- Dynamic Feedback Panel (Show after option click in study mode) -->
+        <div id="feedbackBox" class="hidden p-4 rounded-xl border mb-6 transition-all duration-300">
+          <div class="flex items-start gap-3">
+            <div id="feedbackIcon" class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 font-bold"></div>
+            <div>
+              <h4 id="feedbackTitle" class="font-bold text-sm mb-1"></h4>
+              <p id="feedbackExplanation" class="text-xs md:text-sm leading-relaxed text-slate-300"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+          <button id="prevBtn" onclick="app.prevQuestion()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-arrow-left"></i> Артқа
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button id="skipBtn" onclick="app.nextQuestion()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs font-semibold transition">
+              Өткізіп жіберу
+            </button>
+            <button id="nextBtn" onclick="app.nextQuestion()" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-lg shadow-brand-600/20 transition flex items-center gap-1.5">
+              Келесі <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button id="finishBtn" onclick="app.finishQuiz()" class="hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white text-xs font-bold shadow-lg transition flex items-center gap-1.5">
+              Аяқтау <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Results & Mistakes Review Screen -->
+    <section id="screen-result" class="hidden space-y-6">
+      
+      <!-- Top Score Summary Banner -->
+      <div class="glass-card rounded-2xl p-6 md:p-8 text-center relative overflow-hidden">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-semibold mb-3 border border-slate-700">
+          <i class="fa-solid fa-chart-pie text-brand-400"></i> Тестілеу Нәтижесі
+        </div>
+
+        <!-- Score Dial -->
+        <div class="relative w-36 h-36 mx-auto my-4 flex items-center justify-center">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path id="scoreCirclePath" class="text-brand-500 transition-all duration-1000 ease-out" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="absolute flex flex-col items-center">
+            <span id="scorePercent" class="text-3xl font-extrabold text-white">0%</span>
+            <span id="scoreFraction" class="text-xs text-slate-400 font-medium">0 / 30</span>
+          </div>
+        </div>
+
+        <h3 id="scoreTitle" class="text-xl font-bold text-white mb-2">Тамаша нәтиже!</h3>
+        <p id="scoreSubtitle" class="text-slate-300 text-xs md:text-sm max-w-md mx-auto mb-6">
+          Дайындығыңды одан әрі шыңдау үшін қателермен жұмыс бөлімін мұқият оқып шық.
+        </p>
+
+        <!-- Stats Breakdown Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto mb-6">
+          <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
+            <span class="text-[11px] text-slate-400 block">Дұрыс жауап</span>
+            <span id="statCorrect" class="text-lg font-bold text-emerald-400">0</span>
+          </div>
+          <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
+            <span class="text-[11px] text-slate-400 block">Қате жауап</span>
+            <span id="statWrong" class="text-lg font-bold text-rose-400">0</span>
+          </div>
+          <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
+            <span class="text-[11px] text-slate-400 block">Дәлдік</span>
+            <span id="statAccuracy" class="text-lg font-bold text-indigo-400">0%</span>
+          </div>
+          <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
+            <span class="text-[11px] text-slate-400 block">Жұмсалған уақыт</span>
+            <span id="statTime" class="text-lg font-bold text-amber-400">00:00</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button id="retakeMistakesBtn" onclick="app.retakeMistakes()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-bold text-xs shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-left"></i>
+            Қате сұрақтарды қайта тапсыру (<span id="retakeCount">0</span>)
+          </button>
+          <button onclick="app.startQuiz('all')" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            Тестті қайта бастау
+          </button>
+        </div>
+      </div>
+
+      <!-- Topic Performance Breakdown Bar -->
+      <div class="glass-card rounded-2xl p-5 md:p-6 space-y-4">
+        <h4 class="font-bold text-sm text-slate-200 flex items-center gap-2">
+          <i class="fa-solid fa-chart-simple text-indigo-400"></i>
+          Тақырыптар бойынша талдау
+        </h4>
+        <div id="topicBreakdownContainer" class="space-y-3">
+          <!-- Dynamic breakdown bars inserted here -->
+        </div>
+      </div>
+
+      <!-- Mandatory Section: Қателермен жұмыс (Mistakes Review) -->
+      <div class="glass-card rounded-2xl p-5 md:p-6 space-y-4 border-l-4 border-amber-500">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h4 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+              Қателермен жұмыс (Түсініктемелер)
+            </h4>
+            <p class="text-xs text-slate-400 mt-1">
+              Қате жіберген әрбір сұрақтың дұрыс жауабы мен ҰБТ конспектісін мұқият қайталаңыз:
+            </p>
+          </div>
+        </div>
+
+        <div id="mistakesContainer" class="space-y-4 pt-2">
+          <!-- Dynamic Mistakes Cards generated here -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Question Jump Matrix Modal -->
+  <div id="matrixModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-md w-full p-5 space-y-4 border border-slate-700 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-sm text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-grid-2 text-indigo-400"></i> Сұрақтар тізімі
+        </h3>
+        <button onclick="app.toggleMatrixModal()" class="text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="matrixGrid" class="grid grid-cols-5 gap-2 max-h-64 overflow-y-auto p-1">
+        <!-- Matrix buttons dynamically built here -->
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-brand-500/30 border border-brand-500"></span> Жауап берілген</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-800 border border-slate-700"></span> Жауапсыз</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-600"></span> Ағымдағы</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Theory Notes Modal (Дәріс Конспектілері) -->
+  <div id="theoryModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 md:p-6">
+    <div class="glass-card rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border border-slate-700 shadow-2xl">
+      <!-- Modal Header -->
+      <div class="p-4 md:p-5 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-white">ҰБТ Биология - 5 Дәріс Конспектісі</h3>
+            <p class="text-xs text-slate-400">Негізгі фактілер, терминдер мен формулалар</p>
+          </div>
+        </div>
+        <button onclick="app.closeTheoryModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Theory Scrollable Content -->
+      <div class="p-4 md:p-6 overflow-y-auto space-y-6 text-slate-200 text-xs md:text-sm leading-relaxed">
+        
+        <!-- Topic 1 -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 space-y-2">
+          <h4 class="font-bold text-brand-400 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-circle-nodes"></i> 1. Саңырауқұлақтар патшалығы (Fungi)
+          </h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-300">
+            <li><b>Өсімдікке ұқсас белгілері:</b> Жасуша қабырғасы бар, вакуолі бар, спора арқылы көбейеді, шексіз өседі, қозғалмайды.</li>
+            <li><b>Жануарға ұқсас белгілері:</b> Жасуша қабырғасында хитин бар, қорек қоры - гликоген, гетеротрофты қоректенеді, лизосомалары бар, несепнәр түзеді.</li>
+            <li><b>Мукор:</b> Ақ зең, көпядролы, біржасушалы жіпшумақ (мицелий).</li>
+            <li><b>Пеницилл:</b> Жасыл-көгілдір зең, көпжасушалы, бірінші антибиотик (пенициллин) алынады.</li>
+            <li><b>Ашытқылар (Saccharomyces):</b> Біржасушалы, бүршіктену арқылы көбейеді, анаэробты жағдайда глюкозаны этанол мен CO2-ге айналдырады.</li>
+            <li><b>Қалпақшалылар:</b> Жемісті дене (қалпақша + түбіртек). Жеуге жарамды (ақ саңырауқұлақ, майқұлақ) vs Улы (шыбынжұт, көңілкеш / боз ашытқы, жалған түбіртек).</li>
+            <li><b>Қыналар (Lichens):</b> Саңырауқұлақ (су, мин. зат) + Балдыр (автотроф, органика) симбиозы. Автотроф-гетеротрофты (миксотроф).</li>
+          </ul>
+        </div>
+
+        <!-- Topic 2 -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 space-y-2">
+          <h4 class="font-bold text-green-400 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-seedling"></i> 2. Өсімдік бөлімдері (Plant Divisions)
+          </h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-300">
+            <li><b>Төменгі өсімдіктер (Балдырлар):</b> Денесі - таллом (талус), ұлпалары мен мүшелері болмайды. Жасыл (Хламидомонада, Хлорелла, Спирогира, Вольвокс, Улотрикс, Ульва), Қоңыр (Ламинария, Саргассум, Фукус), Қызыл (Порфира).</li>
+            <li><b>Мохтар (Мүктәр):</b> Алғашқы құрлық өсімдіктері, сабағы мен жапырағы бар, тамыр орнына ризоидтар, өткізгіш ұлпасы жоқ. Споралары спорангийде жетіледі.</li>
+            <li><b>Плаун, Қырықбуын, Қырықжапырақтар:</b> Риниофиттерден шыққан, тамырсабағы бар, өткізгіш және тірек ұлпалары бар. 300 млн жыл бұрын тас көмір түзуге қатысқан.</li>
+            <li><b>Ашық тұқымдылар:</b> Тұқымды қырықжапырақтардан шыққан, бүрлері (конус) бар, кіндік тамыр, қылқан жапырақ.</li>
+            <li><b>Жабық тұқымдылар (Гүлді):</b> Гүл, жеміс, түйін ішіндегі тұқымбүршігі. Жәндіктермен бірге (коэволюция) дамыған.</li>
+            <li><b>Ксилема vs Флоэма:</b> Ксилема (сүрек, түтіктер) - су мен минералды заттарды тамырдан жапыраққа тасымалдайды. Флоэма (тән, електі түтіктер) - органикалық заттарды жапырақтан тамырға тасымалдайды.</li>
+          </ul>
+        </div>
+
+        <!-- Topic 3 -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 space-y-2">
+          <h4 class="font-bold text-lime-400 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-leaf"></i> 3. Даражарнақтылар мен Қосжарнақтылар
+          </h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-300">
+            <li><b>Даражарнақтылар (Monocots):</b> 1 тұқым жарнағы, шашақ тамыр жүйесі, параллель немесе доғалы жүйкелену, жай жапырақтар, 3 еселік гүл бөліктері, камбий болмайды (шөптесін түрі). Мысалдары: бидай, жүгері, қызғалдақ, пияз, лалагүл.</li>
+            <li><b>Қосжарнақтылар (Dicots):</b> 2 тұқым жарнағы, кіндік тамыр жүйесі, торлы (саусақша/қауырсынша) жүйкелену, жай және күрделі жапырақтар, 4-5 еселік гүл бөліктері, камбий болады (сүректі/ағаш түрі). Мысалдары: бұршақ, емен, раушан, алма, орамжапырақ.</li>
+          </ul>
+        </div>
+
+        <!-- Topic 4 -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 space-y-2">
+          <h4 class="font-bold text-cyan-400 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-fish"></i> 4. Жануарлар әлемі (Animals)
+          </h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-300">
+            <li><b>Омыртқасыздар:</b>
+              <br>- Шаянтәрізділер: 2 жұп мұртша, желбезек арқылы тыныс алу.
+              <br>- Өрмекшітәрізділер: 4 жұп аяқ, хелицера мен педипальпа, өкпе/трахея.
+              <br>- Жәндіктер: 3 жұп аяқ, демікпе (трахея) арқылы тыныс алу.
+            </li>
+            <li><b>Омыртқалылар:</b>
+              <br>- <b>Балықтар:</b> Қабыршақ, бүйір сызығы (су ағысын сезу), торсылдақ (жүзу/тереңдік), желбезек.
+              <br>- <b>Қосмекенділер:</b> Дымқыл тері, дернәсілі (шабақ) желбезекпен, ересегі өкпе (60%) және тері (40%) арқылы тыныс алады.
+              <br>- <b>Бауырымен жорғалаушылар:</b> 100% өкпемен тыныс алу, терісі құрғақ мүйізді қабыршақты, 3 камералы жүрек (жүрекше арасында жартылай перде).
+              <br>- <b>Құстар:</b> Қауырсын, қанат, тұмсық, өкпе + ауа қапшақтары (қос тыныс алу).
+              <br>- <b>Сүтқоректілер:</b> Жүн, тер/сүт бездері, ортаңғы құлақта 3 естіу сүйекшесі (балғашық, төс, үзеңгі), сараланған тістер (күрек, азу, сойша).
+            </li>
+          </ul>
+        </div>
+
+        <!-- Topic 5 -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 space-y-2">
+          <h4 class="font-bold text-indigo-400 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-flask"></i> 5. Су, Химиялық элементтер & Көмірсулар
+          </h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-300">
+            <li><b>Су:</b> +4°C температурада ең жоғары тығыздыққа ие (мұз су бетіне қалқиды), когезия (молекулалардың тартылуы), адгезия, беттік керілу. Қайнау 100°C, қату 0°C.</li>
+            <li><b>Элементтер функциясы:</b> N (Азот) - нәруыз мен хлорофилл; P (Фосфор) - ДНҚ, РНҚ және тамыр дамуы; K (Калий) - сабақтың беріктігі, жасуша жұмысы; Ca (Кальций) - сүйек, қан ұю; Fe (Темір) - гемоглобин мен хлорофилл синтезі; Mg (Магний) - хлорофилл молекуласының орталық элементы.</li>
+            <li><b>ҰБТ Ауылшаруашылық Рекордтар:</b> Шығанақ Берсиев - 201 ц/га тары; Ыбырай Жақаев - 174 ц/га күріш.</li>
+            <li><b>Моносахаридтер:</b> Триоза (C3), Пентоза (C5 - Рибоза C5H10O5, Дезоксирибоза C5H10O4), Гексоза (C6 - Глюкоза, Фруктоза, Галактоза).</li>
+            <li><b>Дисахаридтер:</b> Сахароза = Глюкоза + Фруктоза; Лактоза = Глюкоза + Галактоза; Мальтоза = Глюкоза + Глюкоза.</li>
+            <li><b>Полисахаридтер:</b> Крахмал, Гликоген, Целлюлоза (мақтада 98%, сүректе 50%), Хитин (мономері - ацетилглюкозамин), Муреин (бактерия қабырғасы).</li>
+            <li><b>Энергия:</b> 1 г көмірсу толық ыдырағанда 17.8 кДж (немесе 4.1 ккал) энергия бөлінеді. Глюкозаның ыдырау энергиясы - 17.6 кДж/г.</li>
+            <li><b>Гормондар:</b> Инсулин (қандағы глюкозаны азайтады, гликогенге айналдырады), Глюкагон (қандағы глюкозаны көбейтеді).</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-slate-800 flex justify-end">
+        <button onclick="app.closeTheoryModal()" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition">
+          Түсіндім, тестке оралу
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Full UNT Biology Question Bank (30 High-Yield Questions) */
+    const QUESTION_BANK = [
+      // Topic 1: Саңырауқұлақтар патшалығы
+      {
+        id: 1,
+        topicId: 1,
+        topicName: "Саңырауқұлақтар патшалығы",
+        question: "Саңырауқұлақтардың жануарларға ұқсас басты химиялық және биологиялық белгілерін көрсетіңіз:",
+        options: [
+          "Жасуша қабырғасының болуы, вакуольдің болуы, спора арқылы көбею",
+          "Хитиннің болуы, гликоген жинау, гетеротрофты қоректену, лизосомаларының болуы",
+          "Автотрофты қоректену, крахмал жинау, пластидтердің болуы",
+          "Шексіз өсу, қозғалмау, фотосинтез процесін жүзеге асыру"
+        ],
+        correct: 1,
+        explanation: "Саңырауқұлақтар жануарлар сияқты гетеротрофты, қорек қоры ретінде гликоген жинайды, жасуша қабырғасында хитин болады және лизосомалары бар. Ал жасуша қабырғасы, вакуоль және шексіз өсу - өсімдіктік белгілер."
+      },
+      {
+        id: 2,
+        topicId: 1,
+        topicName: "Саңырауқұлақтар патшалығы",
+        question: "Ақ зең саңырауқұлағы — мукордың пенициллден басты құрылымдық айырмашылығы қандай?",
+        options: [
+          "Мукор көпжасушалы, ал пеницилл біржасушалы болып келеді",
+          "Мукор жіпшумағы (мицелий) көп ядролы бір гигант жасушадан тұрады",
+          "Мукор тек қана бүршіктену арқылы көбейеді",
+          "Мукордан алғаш рет пенициллин антибиотигі бөлініп алынған"
+        ],
+        correct: 1,
+        explanation: "Мукор (ақ зең) — біржасушалы, бірақ көп ядролы пердесіз жіпшумақтан тұрады. Ал пеницилл (жасыл зең) — көпжасушалы тармақталған перделі жіпшумаққа ие."
+      },
+      {
+        id: 3,
+        topicId: 1,
+        topicName: "Саңырауқұлақтар патшалығы",
+        question: "Ашытқы саңырауқұлақтары (Saccharomyces) анаэробты жағдайда қантты қай өнімдерге дейін ыдыратады?",
+        options: [
+          "Сүт қышқылы мен оттекке",
+          "Этанол (этил спирті) мен көмірқұраушы газға (CO2)",
+          "Сірке қышқылы мен сутекке",
+          "Глюкоза мен аминоқышқылдарға"
+        ],
+        correct: 1,
+        explanation: "Ашытқылар анаэробты (оттексіз) ашыту кезінде глюкозаны этил спирті (этанол) мен CO2 газына ыдыратады. Бұл процесс нан пісіруде және алкоголь өндірісінде қолданылады."
+      },
+      {
+        id: 4,
+        topicId: 1,
+        topicName: "Саңырауқұлақтар патшалығы",
+        question: "Төмендегілердің ішінен улы қалпақшалы саңырауқұлақтар тобын анықтаңыз:",
+        options: [
+          "Ақ саңырауқұлақ, майқұлақ, шампиньон",
+          "Шыбынжұт, көңілкеш (боз ашытқы), жалған түбіртек",
+          "Түлкіжем, қайыңқұлақ, аспанқұлақ",
+          "Пеницилл, мукор, аспергилл"
+        ],
+        correct: 1,
+        explanation: "Шыбынжұт (мухомор), көңілкеш / боз ашытқы (бледная поганка) және жалған түбіртек — аса қауіпті улы саңырауқұлақтар болып табылады."
+      },
+      {
+        id: 5,
+        topicId: 1,
+        topicName: "Саңырауқұлақтар патшалығы",
+        question: "Қыналардың (Lichens) биологиялық табиғаты мен қоректену типі қандай?",
+        options: [
+          "Тек паразиттік қоректенетін қарапайым өсімдік",
+          "Саңырауқұлақ пен балдырдың симбиозы, авто-гетеротрофты (миксотрофты)",
+          "Тек сапрофитті өмір сүретін бактериялар тобы",
+          "Хлорофиллы бар дербес су өсімдігі"
+        ],
+        correct: 1,
+        explanation: "Қыналар — саңырауқұлақ (су мен минералды заттар береді) және балдырдың (фотосинтез арқылы органика береді) симбиотикалық ағзасы. Сондықтан қоректенуі авто-гетеротрофты."
+      },
+
+      // Topic 2: Өсімдік бөлімдері
+      {
+        id: 6,
+        topicId: 2,
+        topicName: "Өсімдік бөлімдері",
+        question: "Төменгі өсімдіктерге (балдырларға) тән басты анатомиялық ерекшелік қандай?",
+        options: [
+          "Денесі тамыр, сабақ, жапыраққа анық бөлінген",
+          "Денесі ұлпалар мен органдарға бөлінбеген талломнан (талустан) тұрады",
+          "Ксилема мен флоэма өткізгіш шоқтары жақсы дамыған",
+          "Тұқым арқылы ғана көбейеді"
+        ],
+        correct: 1,
+        explanation: "Төменгі өсімдіктердің (балдырлардың) мүшелері мен шынайы ұлпалары болмайды. Олардың денесі қатпарлы таллом (талус) деп аталады."
+      },
+      {
+        id: 7,
+        topicId: 2,
+        topicName: "Өсімдік бөлімдері",
+        question: "Мохтардың (мүктәрдің) басқа жоғары споралы өсімдіктерден басты айырмашылығы неде?",
+        options: [
+          "Кіндік тамыр жүйесінің болуында",
+          "Нағыз тамырдың болмауы, бекіну қызметін ризоидтардың атқаруы",
+          "Гүл мен жеміс түзуінде",
+          "Ксилема арқылы органикалық заттарды тасымалдауында"
+        ],
+        correct: 1,
+        explanation: "Мохтарда нағыз тамыр болмайды, оның орнына топыраққа ризоидтар арқылы бекінеді. Сонымен қатар оларда өткізгіш ұлпалар нашар жетілген."
+      },
+      {
+        id: 8,
+        topicId: 2,
+        topicName: "Өсімдік бөлімдері",
+        question: "Осыдан 300 миллион жыл бұрын тас көмір қорын түзуге қатысқан ежелгі өсімдіктер тобы:",
+        options: [
+          "Біржасушалы жасыл балдырлар",
+          "Ағаш тәрізді плаундар, қырықбуындар мен қырықжапырақтар",
+          "Ашық тұқымды қылқанжапырақтар",
+          "Қосжарнақты гүлді өсімдіктер"
+        ],
+        correct: 1,
+        explanation: "Палеозой эрасының Тас көмір (Карбон) кезеңінде үлкен батпақты ормандарды құраған ағаш тәрізді споралы өсімдіктер (папоротниктер, плаундар, қырықбуындар) тас көмір кенін түзеді."
+      },
+      {
+        id: 9,
+        topicId: 2,
+        topicName: "Өсімдік бөлімдері",
+        question: "Өсімдік ағзасында су мен онда еріген минералды тұздарды тамырдан жапыраққа тасымалдайтын ұлпа:",
+        options: [
+          "Флоэма (електі түтікшелер)",
+          "Ксилема (сүрек түтіктері)",
+          "Камбий (түзуші ұлпа)",
+          "Паренхима (негізгі ұлпа)"
+        ],
+        correct: 1,
+        explanation: "Ксилема (сүрек) түтіктері арқылы жоғарыға қарай өрлеу ағысымен су мен онда еріген минералды тұздар тасымалданады. Ал флоэма органикалық заттарды төмен тасымалдайды."
+      },
+      {
+        id: 10,
+        topicId: 2,
+        topicName: "Өсімдік бөлімдері",
+        question: "Ашық тұқымды өсімдіктердің жабық тұқымдылардан басты айырмашылығы қандай?",
+        options: [
+          "Тұқымдары бүр масштабында ашық жатады, гүл мен аналық түйіні болмайды",
+          "Тұқымдары жеміс ішінде тығыз жабық орналасқан",
+          "Тек қана споралар арқылы көбейеді",
+          "Сусыз ұрықтана алмайды"
+        ],
+        correct: 0,
+        explanation: "Ашық тұқымдыларда (қарағай, шырша) гүл мен жеміс айналасы болмайды, тұқымбүрлері бүр (конус) қабыршақтарында ашық орналасады."
+      },
+
+      // Topic 3: Даражарнақтылар мен қосжарнақтылар
+      {
+        id: 11,
+        topicId: 3,
+        topicName: "Даражарнақтылар мен қосжарнақтылар",
+        question: "Даражарнақты өсімдіктерге тән белгілер жиынтығын анықтаңыз:",
+        options: [
+          "2 тұқым жарнағы, кіндік тамыр, торлы жүйкелену, 5 еселік гүл",
+          "1 тұқым жарнағы, шашақ тамыр, параллель/доғалы жүйкелену, 3 еселік гүл",
+          "Камбий қабаты бар, сүректі діңі дамыған, 4 еселік гүл",
+          "Күрделі саусақша жапырақтар, кіндік тамыр, 2 тұқым жарнағы"
+        ],
+        correct: 1,
+        explanation: "Даражарнақтыларға: 1 тұқым жарнағы, шашақ тамыр жүйесі, параллель/доғалы жүйкелену, 3 еселік гүл мүшелері және камбийдің болмауы тән."
+      },
+      {
+        id: 12,
+        topicId: 3,
+        topicName: "Даражарнақтылар мен қосжарнақтылар",
+        question: "Қосжарнақты өсімдіктердің сабағының жуандап өсуін қамтамасыз ететін түзуші ұлпа қабаты:",
+        options: [
+          "Эпидермис (теріше)",
+          "Камбий",
+          "Ксилема",
+          "Флоэма"
+        ],
+        correct: 1,
+        explanation: "Қосжарнақтыларда сүрек пен тән арасында камбий түзуші ұлпасы орналасады. Жасушалардың бөлінуі сабақтың жуандап өсуін қамтамасыз етеді."
+      },
+      {
+        id: 13,
+        topicId: 3,
+        topicName: "Даражарнақтылар мен қосжарнақтылар",
+        question: "Төмендегі өсімдіктердің ішінен тек ДАРАЖАРНАҚТЫЛАР тобын көрсетіңіз:",
+        options: [
+          "Бұршақ, емен, раушан, алма",
+          "Бидай, жүгері, қызғалдақ, пияз, лалагүл",
+          "Орамжапырақ, асбұршақ, картоп, күнбағыс",
+          "Қайың, өрік, алмұрт, мақта"
+        ],
+        correct: 1,
+        explanation: "Бидай, жүгері (астық тұқымдасы), қызғалдақ, пияз, лалагүл — даражарнақтылар класына жатады."
+      },
+      {
+        id: 14,
+        topicId: 3,
+        topicName: "Даражарнақтылар мен қосжарнақтылар",
+        question: "Қосжарнақты өсімдіктерге тән тамыр жүйесі мен жапырақ жүйкеленуінің типі:",
+        options: [
+          "Шашақ тамыр жүйесі және параллель жүйкелену",
+          "Кіндік тамыр жүйесі және торлы (саусақша/қауырсынша) жүйкелену",
+          "Шашақ тамыр жүйесі және доғалы жүйкелену",
+          "Тамырдың болмауы және жүйкеленудің болмауы"
+        ],
+        correct: 1,
+        explanation: "Қосжарнақтылардың басты сипаттамасы — жақсы дамыған кіндік тамыр жүйесі мен торлы жүйкелену."
+      },
+      {
+        id: 15,
+        topicId: 3,
+        topicName: "Даражарнақтылар мен қосжарнақтылар",
+        question: "Гүл бөліктерінің саны 4 немесе 5-ке еселік болып келетін өсімдіктер класы:",
+        options: [
+          "Даражарнақтылар (Monocotyledoneae)",
+          "Қосжарнақтылар (Dicotyledoneae)",
+          "Ашық тұқымдылар (Gymnospermae)",
+          "Жоғары споралылар (Pteridophyta)"
+        ],
+        correct: 1,
+        explanation: "Қосжарнақты өсімдіктерде гүлдің тостағанша және күлте жапырақшалары әдетте 4 немесе 5-ке еселік болады."
+      },
+
+      // Topic 4: Омыртқасыз және омыртқалы жануарлар
+      {
+        id: 16,
+        topicId: 4,
+        topicName: "Жануарлар әлемі",
+        question: "Буыnayaқтылар типінің өкілі — ЖӘНДІКТЕРГЕ (Insecta) тән сипаттамаларды таңдаңыз:",
+        options: [
+          "2 жұп мұртша, 5 жұп жүру аяқтары, желбезекпен тыныс алу",
+          "3 жұп жүру аяғы, денесі 3 бөлімнен тұрады (бас, көкірек, құрсақ), трахея арқылы тыныс алу",
+          "4 жұп жүру аяғы, мұртшалары болмайды, хелицералары бар",
+          "Денесі буылтық құрттарға ұқсас, бақалшағы бар"
+        ],
+        correct: 1,
+        explanation: "Жәндіктерде дәл 3 жұп (6 дана) аяқ болады, денесі бас, көкірек, құрсаққа бөлінеді, тыныс алу жүйесі — демікпе/трахеялар."
+      },
+      {
+        id: 17,
+        topicId: 4,
+        topicName: "Жануарлар әлемі",
+        question: "Балықтардың судың ағысын, бағытын және кедергілерді қашықтықтан сезуге арналған ерекше мүшесі:",
+        options: [
+          "Торсылдақ",
+          "Бүйір сызығы (боковая линия)",
+          "Желбезек қақпағы",
+          "Венозды синус"
+        ],
+        correct: 1,
+        explanation: "Бүйір сызығы — балықтардың тербелістерді, су ағысының жылдамдығы мен бағытын сезетін арнайы сезім мүшесі."
+      },
+      {
+        id: 18,
+        topicId: 4,
+        topicName: "Жануарлар әлемі",
+        question: "Ересек қосмекенділерде (амфибияларда) газ алмасу процесі қай органдар арқылы жүзеге асады?",
+        options: [
+          "Тек қана желбезек арқылы",
+          "Өкпе (шамамен 60%) және ылғалды тері (шамамен 40%) арқылы",
+          "Тек трахеялар жүйесі арқылы",
+          "Ауа қапшақтары арқылы"
+        ],
+        correct: 1,
+        explanation: "Қосмекенділердің өкпесі нашар жетілген ұяшықты болғандықтан, тыныс алудың 40%-ы дымқыл тері арқылы, ал 60%-ы өкпе арқылы жүреді."
+      },
+      {
+        id: 19,
+        topicId: 4,
+        topicName: "Жануарлар әлемі",
+        question: "Құстардың ұшу кезінде денесінің қызып кетпеуін және оттекпен үздіксіз қамтамасыз етілуін қамтамасыз ететін тыныс алу жүйесінің құрылымы:",
+        options: [
+          "Альвеолалар",
+          "Ауа қапшақтары (қос тыныс алу)",
+          "Торсылдақ",
+          "Желбезек жапырақшалары"
+        ],
+        correct: 1,
+        explanation: "Құстарға қос тыныс алу тән: тыныс алу және тыныс шығару кезінде де өкпе арқылы оттекке бай ауа өтеді. Бұған ауа қапшақтары мүмкіндік береді."
+      },
+      {
+        id: 20,
+        topicId: 4,
+        topicName: "Жануарлар әлемі",
+        question: "Сүтқоректілерге ғана тән анатомиялық ерекшеліктерді көрсетіңіз:",
+        options: [
+          "Қабыршақты тері, 3 камералы жүрек, ұшар сүйегі",
+          "Жүн жабыны, тер және сүт бездері, ортаңғы құлақта 3 естіу сүйекшесі, сараланған тістер",
+          "Ауа қапшақтары, мүйізді тұмсық, жұмыртқа салу",
+          "Торсылдақ, бүйір сызығы, желбезектер"
+        ],
+        correct: 1,
+        explanation: "Сүтқоректілерде: денесін жүн жапқан, тер/сүт бездері бар, ортаңғы құлағында 3 сүйекше (балғашық, төс, үзеңгі) және тістері сараланған (күрек, азу, сойша)."
+      },
+
+      // Topic 5: Су, химиялық элементтер, органикалық заттар мен көмірсулар
+      {
+        id: 21,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Судың қай температурада тығыздығы максималды маңызға ие болады және бұл су қоймалары үшін неліктен маңызды?",
+        options: [
+          "0°C-та, бұл су түбінің толық қатуына әкеледі",
+          "+4°C-та, сондықтан мұз су бетіне қалқып шығып, су астындағы тіршілікті сақтайды",
+          "+100°C-та, су тез буланады",
+          "-4°C-та, су молекулалары ыдырайды"
+        ],
+        correct: 1,
+        explanation: "Су +4°C температурада ең жоғары тығыздыққа ие. Мұз мұхит пен көлдердің бетінде қатып, астындағы суды +4°C деңгейінде сақтап, тіршілікті қорғайды."
+      },
+      {
+        id: 22,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Хлорофилл молекуласының орталық металл атомы және нәруыз бен ДНҚ құрамына кіретін элементтер:",
+        options: [
+          "Mg (Магний) - хлорофиллде; N (Азот) мен P (Фосфор) - нәруыз бен ДНҚ-да",
+          "Fe (Темір) - хлорофиллде; Ca (Кальций) - ДНҚ-да",
+          "Na (Натрий) - хлорофиллде; K (Калий) - нәруызда",
+          "Cu (Мыс) - хлорофиллде; S (Күкірт) - ДНҚ-да"
+        ],
+        correct: 0,
+        explanation: "Магний (Mg) хлорофилл пигментінің ядросын құрайды. Азот (N) нәруыздар мен нуклеин қышқылдарында, ал Фосфор (P) ДНҚ, РНҚ және АТФ құрамында болады."
+      },
+      {
+        id: 23,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "ҰБТ деректері бойынша рекордтық өнім алған ауылшаруашылық шеберлері мен олардың дақылдары:",
+        options: [
+          "Шығанақ Берсиев — 201 ц/га тары; Ыбырай Жақаев — 174 ц/га күріш",
+          "Ыбырай Жақаев — 201 ц/га бидай; Шығанақ Берсиев — 174 ц/га жүгері",
+          "Шығанақ Берсиев — 300 ц/га күріш; Ыбырай Жақаев — 100 ц/га тары",
+          "Нұрлыбек Мадрахимов — 201 ц/га мақта; Шығанақ Берсиев — 150 ц/га арпа"
+        ],
+        correct: 0,
+        explanation: "ҰБТ биология оқулықтарындағы классикалық факт: Шығанақ Берсиев тарыдан 201 ц/га, ал Ыбырай Жақаев күріштен 174 ц/га рекордтық өнім алған."
+      },
+      {
+        id: 24,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Рибоза (C5H10O5) мен Дезоксирибозаның (C5H10O4) көмірсулардың қай тобына жататынын анықтаңыз:",
+        options: [
+          "Триозалар (C3)",
+          "Пентозалар (C5 моносахаридтер)",
+          "Гексозалар (C6)",
+          "Дисахаридтер"
+        ],
+        correct: 1,
+        explanation: "Рибоза және дезоксирибоза — 5 көміртек атомы бар моносахаридтер, яғни пентозалар тобына жатады (РНҚ мен ДНҚ құрамына киреді)."
+      },
+      {
+        id: 25,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Сахароза, Лактоза және Мальтоза дисахаридтерінің құрамындағы моносахаридтік мономерлер пары:",
+        options: [
+          "Сахароза (Глюкоза + Фруктоза), Лактоза (Глюкоза + Галактоза), Мальтоза (Глюкоза + Глюкоза)",
+          "Сахароза (Глюкоза + Глюкоза), Лактоза (Рибоза + Глюкоза)",
+          "Сахароза (Фруктоза + Галактоза), Лактоза (Дезоксирибоза + Глюкоза)",
+          "Барлығы тек крахмал мономерлерінен тұрады"
+        ],
+        correct: 0,
+        explanation: "Сахароза (қант) = Глюкоза + Фруктоза; Лактоза (сүт қанты) = Глюкоза + Галактоза; Мальтоза (уыз қанты) = Глюкоза + Глюкоза."
+      },
+      {
+        id: 26,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Буыnayaқтылардың сыртқы қаңқасын және саңырауқұлақ жасуша қабырғасын түзетін полисахарид пен оның мономері:",
+        options: [
+          "Крахмал (мономері - Глюкоза)",
+          "Хитин (мономері - N-ацетилглюкозамин)",
+          "Целлюлоза (мономері - Фруктоза)",
+          "Муреин (мономері - Аминоқышқыл)"
+        ],
+        correct: 1,
+        explanation: "Хитин — өте берік полисахарид, оның құрылымдық мономері N-ацетилглюкозамин болып табылады."
+      },
+      {
+        id: 27,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "1 грамм көмірсу организмде толық ыдырап тотыққанда қанша энергия бөлінеді?",
+        options: [
+          "38.9 кДж",
+          "17.8 кДж (немесе 4.1 ккал)",
+          "10.5 кДж",
+          "100 кДж"
+        ],
+        correct: 1,
+        explanation: "1 г көмірсу ыдырағанда 17.8 кДж (4.1 ккал) энергия бөлінеді. (1 г май ыдырағанда 38.9 кДж бөлінеді)."
+      },
+      {
+        id: 28,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Қандағы глюкоза мөлшері азайғанда ұйқы безінен бөлініп, бауырдағы гликогенді глюкозаға айналдыратын гормон:",
+        options: [
+          "Инсулин",
+          "Глюкагон",
+          "Адреналин",
+          "Тироксин"
+        ],
+        correct: 1,
+        explanation: "Глюкагон гормоны қандағы глюкоза деңгейін арттырады (гликогенді ыдыратады). Ал инсулин керісінше қандағы глюкозаны азайтады."
+      },
+      {
+        id: 29,
+        topicId: 2,
+        topicName: "Өсімдік бөлімдері",
+        question: "Өсімдіктердің жапырағында фотосинтез нәтижесінде түзілген органикалық заттарды төмен қарай тасымалдайтын өткізгіш ұлпа:",
+        options: [
+          "Ксилема түтіктері",
+          "Флоэма (тәннің електі түтікшелері)",
+          "Меристема жасушалары",
+          "Ризоидтар"
+        ],
+        correct: 1,
+        explanation: "Флоэма (тән) құрамындағы тиісті електі түтікшелер органикалық заттарды (сахароза т.б.) жапырақтардан тамырға және сабаққа тасымалдайды."
+      },
+      {
+        id: 30,
+        topicId: 5,
+        topicName: "Су, химиялық элементтер & Көмірсулар",
+        question: "Мақта талшығының құрамындағы целлюлозаның (жасұнықтың) мөлшері қанша пайызды құрайды?",
+        options: [
+          "Шамамен 50%",
+          "Шамамен 98%",
+          "100%",
+          "25%"
+        ],
+        correct: 1,
+        explanation: "Мақта талшығы дерлік таза целлюлозадан (шамамен 98%) тұрады. Сүректе целлюлоза мөлшері 40-50% шамасында болады."
+      }
+    ];
+  </script>
+
+  <script>
+    /* Main Application Controller Object */
+    class UNTBiologyApp {
+      constructor() {
+        this.questions = [...QUESTION_BANK];
+        this.currentIndex = 0;
+        this.userAnswers = {}; // questionId -> selectedOptionIndex
+        this.timer = null;
+        this.secondsElapsed = 0;
+        this.isReviewMode = false;
+        this.mistakeQuestionIds = [];
+      }
+
+      init() {
+        this.showScreen('welcome');
+      }
+
+      showScreen(screenName) {
+        document.getElementById('screen-welcome').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-result').classList.add('hidden');
+
+        document.getElementById(`screen-${screenName}`).classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      startQuiz(mode = 'all') {
+        if (mode === 'all') {
+          this.questions = [...QUESTION_BANK];
+        }
+        this.currentIndex = 0;
+        this.userAnswers = {};
+        this.secondsElapsed = 0;
+        this.startTimer();
+        this.showScreen('quiz');
+        this.renderQuestion();
+      }
+
+      retakeMistakes() {
+        if (this.mistakeQuestionIds.length === 0) return;
+        this.questions = QUESTION_BANK.filter(q => this.mistakeQuestionIds.includes(q.id));
+        this.currentIndex = 0;
+        this.userAnswers = {};
+        this.secondsElapsed = 0;
+        this.startTimer();
+        this.showScreen('quiz');
+        this.renderQuestion();
+      }
+
+      startTimer() {
+        if (this.timer) clearInterval(this.timer);
+        const timerEl = document.getElementById('quizTimer');
+        this.timer = setInterval(() => {
+          this.secondsElapsed++;
+          const mins = String(Math.floor(this.secondsElapsed / 60)).padStart(2, '0');
+          const secs = String(this.secondsElapsed % 60).padStart(2, '0');
+          if (timerEl) timerEl.innerHTML = `<i class="fa-regular fa-clock mr-1"></i>${mins}:${secs}`;
+        }, 1000);
+      }
+
+      stopTimer() {
+        if (this.timer) clearInterval(this.timer);
+      }
+
+      renderQuestion() {
+        const q = this.questions[this.currentIndex];
+        if (!q) return;
+
+        // Topic Badge
+        const badgeEl = document.getElementById('quizCategoryBadge');
+        badgeEl.innerHTML = `<i class="fa-solid fa-bookmark text-xs"></i> ${q.topicName}`;
+
+        // Counter
+        document.getElementById('quizQuestionCount').innerText = `Сұрақ: ${this.currentIndex + 1} / ${this.questions.length}`;
+
+        // Progress Bar
+        const progressPercent = ((this.currentIndex + 1) / this.questions.length) * 100;
+        document.getElementById('quizProgressBar').style.width = `${progressPercent}%`;
+
+        // Question Text
+        document.getElementById('questionText').innerText = `${this.currentIndex + 1}. ${q.question}`;
+
+        // Render Options A, B, C, D
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+
+        const selectedOpt = this.userAnswers[q.id];
+        const labels = ['A', 'B', 'C', 'D'];
+
+        q.options.forEach((optText, idx) => {
+          const isSelected = selectedOpt === idx;
+          const isAnswered = selectedOpt !== undefined;
+
+          let btnStyle = "bg-slate-800/80 border-slate-700 hover:bg-slate-700/80 text-slate-200";
+          let labelStyle = "bg-slate-700 text-slate-300";
+
+          if (isAnswered) {
+            if (idx === q.correct) {
+              btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 shadow-lg shadow-emerald-900/20";
+              labelStyle = "bg-emerald-500 text-white font-bold";
+            } else if (isSelected && idx !== q.correct) {
+              btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200 shadow-lg shadow-rose-900/20";
+              labelStyle = "bg-rose-500 text-white font-bold";
+            }
+          } else if (isSelected) {
+            btnStyle = "bg-brand-900/60 border-brand-500 text-brand-100";
+            labelStyle = "bg-brand-500 text-white font-bold";
+          }
+
+          const btn = document.createElement('button');
+          btn.className = `option-btn w-full p-4 rounded-xl border text-left flex items-start gap-3.5 transition-all ${btnStyle}`;
+          btn.onclick = () => this.selectOption(q.id, idx);
+
+          btn.innerHTML = `
+            <span class="w-7 h-7 rounded-lg ${labelStyle} flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+              ${labels[idx]}
+            </span>
+            <span class="text-xs md:text-sm leading-relaxed">${optText}</span>
+          `;
+          container.appendChild(btn);
+        });
+
+        // Show Instant Feedback Panel if question answered
+        const feedbackBox = document.getElementById('feedbackBox');
+        if (selectedOpt !== undefined) {
+          feedbackBox.classList.remove('hidden');
+          const isCorrect = selectedOpt === q.correct;
+
+          const fbIcon = document.getElementById('feedbackIcon');
+          const fbTitle = document.getElementById('feedbackTitle');
+          const fbExp = document.getElementById('feedbackExplanation');
+
+          if (isCorrect) {
+            feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-950/50 border-emerald-500/40 text-emerald-300";
+            fbIcon.className = "w-7 h-7 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm";
+            fbIcon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+            fbTitle.innerText = "Дұрыс жауап!";
+          } else {
+            feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-950/50 border-rose-500/40 text-rose-300";
+            fbIcon.className = "w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm";
+            fbIcon.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+            fbTitle.innerText = "Қате жауап!";
+          }
+          fbExp.innerText = q.explanation;
+        } else {
+          feedbackBox.classList.add('hidden');
+        }
+
+        // Navigation buttons state
+        document.getElementById('prevBtn').disabled = this.currentIndex === 0;
+
+        const isLast = this.currentIndex === this.questions.length - 1;
+        if (isLast) {
+          document.getElementById('nextBtn').classList.add('hidden');
+          document.getElementById('skipBtn').classList.add('hidden');
+          document.getElementById('finishBtn').classList.remove('hidden');
+        } else {
+          document.getElementById('nextBtn').classList.remove('hidden');
+          document.getElementById('skipBtn').classList.remove('hidden');
+          document.getElementById('finishBtn').classList.add('hidden');
+        }
+      }
+
+      selectOption(questionId, optionIndex) {
+        this.userAnswers[questionId] = optionIndex;
+        this.renderQuestion();
+      }
+
+      nextQuestion() {
+        if (this.currentIndex < this.questions.length - 1) {
+          this.currentIndex++;
+          this.renderQuestion();
+        }
+      }
+
+      prevQuestion() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          this.renderQuestion();
+        }
+      }
+
+      jumpToQuestion(index) {
+        this.currentIndex = index;
+        this.toggleMatrixModal();
+        this.renderQuestion();
+      }
+
+      toggleMatrixModal() {
+        const modal = document.getElementById('matrixModal');
+        if (modal.classList.contains('hidden')) {
+          this.renderMatrixGrid();
+          modal.classList.remove('hidden');
+        } else {
+          modal.classList.add('hidden');
+        }
+      }
+
+      renderMatrixGrid() {
+        const grid = document.getElementById('matrixGrid');
+        grid.innerHTML = '';
+        this.questions.forEach((q, idx) => {
+          const isAnswered = this.userAnswers[q.id] !== undefined;
+          const isCurrent = idx === this.currentIndex;
+
+          let btnClass = "bg-slate-800 text-slate-300 border-slate-700";
+          if (isCurrent) {
+            btnClass = "bg-indigo-600 text-white font-bold border-indigo-400 ring-2 ring-indigo-400/50";
+          } else if (isAnswered) {
+            btnClass = "bg-brand-900/60 text-brand-300 border-brand-500/50";
+          }
+
+          const btn = document.createElement('button');
+          btn.className = `h-10 rounded-lg border text-xs flex items-center justify-center transition ${btnClass}`;
+          btn.innerText = idx + 1;
+          btn.onclick = () => this.jumpToQuestion(idx);
+          grid.appendChild(btn);
+        });
+      }
+
+      finishQuiz() {
+        this.stopTimer();
+
+        // Calculate scores
+        let correctCount = 0;
+        this.mistakeQuestionIds = [];
+
+        this.questions.forEach(q => {
+          const userAns = this.userAnswers[q.id];
+          if (userAns === q.correct) {
+            correctCount++;
+          } else {
+            this.mistakeQuestionIds.push(q.id);
+          }
+        });
+
+        const total = this.questions.length;
+        const wrongCount = total - correctCount;
+        const accuracyPct = Math.round((correctCount / total) * 100);
+
+        // Render Score UI
+        document.getElementById('scorePercent').innerText = `${accuracyPct}%`;
+        document.getElementById('scoreFraction').innerText = `${correctCount} / ${total}`;
+        
+        // Update SVG path dash offset
+        const path = document.getElementById('scoreCirclePath');
+        path.setAttribute('stroke-dasharray', `${accuracyPct}, 100`);
+
+        document.getElementById('statCorrect').innerText = correctCount;
+        document.getElementById('statWrong').innerText = wrongCount;
+        document.getElementById('statAccuracy').innerText = `${accuracyPct}%`;
+
+        const mins = String(Math.floor(this.secondsElapsed / 60)).padStart(2, '0');
+        const secs = String(this.secondsElapsed % 60).padStart(2, '0');
+        document.getElementById('statTime').innerText = `${mins}:${secs}`;
+
+        // Custom Titles based on score
+        const titleEl = document.getElementById('scoreTitle');
+        const subtitleEl = document.getElementById('scoreSubtitle');
+
+        if (accuracyPct >= 90) {
+          titleEl.innerText = "Үздік нәтиже! ҰБТ-ға дайынсың! 🎉";
+          subtitleEl.innerText = "Биология пәнінен білімің өте жоғары деңгейде. Осы қарқынды сақта!";
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        } else if (accuracyPct >= 70) {
+          titleEl.innerText = "Жақсы нәтиже! 👍";
+          subtitleEl.innerText = "Кейбір тақырыптарды қайталап, қателермен жұмыс жасасаң, 100% көрсеткішке жетесің.";
+        } else {
+          titleEl.innerText = "Тағы да қайталау қажет 📚";
+          subtitleEl.innerText = "Төмендегі «Қателермен жұмыс» бөліміндегі конспектілерді мұқият оқып, тестті қайта тапсыр.";
+        }
+
+        // Retake Mistakes Button state
+        const retakeBtn = document.getElementById('retakeMistakesBtn');
+        document.getElementById('retakeCount').innerText = this.mistakeQuestionIds.length;
+        if (this.mistakeQuestionIds.length === 0) {
+          retakeBtn.classList.add('hidden');
+        } else {
+          retakeBtn.classList.remove('hidden');
+        }
+
+        // Render Topic Breakdown
+        this.renderTopicBreakdown();
+
+        // Render Mistakes Review
+        this.renderMistakesReview();
+
+        this.showScreen('result');
+      }
+
+      renderTopicBreakdown() {
+        const container = document.getElementById('topicBreakdownContainer');
+        container.innerHTML = '';
+
+        // Group by topic
+        const topicStats = {};
+        this.questions.forEach(q => {
+          if (!topicStats[q.topicName]) {
+            topicStats[q.topicName] = { total: 0, correct: 0 };
+          }
+          topicStats[q.topicName].total++;
+          if (this.userAnswers[q.id] === q.correct) {
+            topicStats[q.topicName].correct++;
+          }
+        });
+
+        Object.keys(topicStats).forEach(topicName => {
+          const stat = topicStats[topicName];
+          const pct = Math.round((stat.correct / stat.total) * 100);
+
+          let barColor = "bg-emerald-500";
+          if (pct < 50) barColor = "bg-rose-500";
+          else if (pct < 80) barColor = "bg-amber-500";
+
+          const div = document.createElement('div');
+          div.className = "space-y-1.5";
+          div.innerHTML = `
+            <div class="flex justify-between text-xs font-medium">
+              <span class="text-slate-300">${topicName}</span>
+              <span class="text-slate-400">${stat.correct} / ${stat.total} (${pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700/50">
+              <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      renderMistakesReview() {
+        const container = document.getElementById('mistakesContainer');
+        container.innerHTML = '';
+
+        if (this.mistakeQuestionIds.length === 0) {
+          container.innerHTML = `
+            <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-center text-xs md:text-sm">
+              <i class="fa-solid fa-circle-check text-lg mb-1 block"></i>
+              Керемет! Сіз барлық сұрақтарға дұрыс жауап бердіңіз. Қате табылған жоқ!
+            </div>
+          `;
+          return;
+        }
+
+        const labels = ['A', 'B', 'C', 'D'];
+
+        this.questions.forEach((q, index) => {
+          const userAnsIdx = this.userAnswers[q.id];
+          const isWrong = userAnsIdx !== q.correct;
+
+          if (!isWrong) return; // Only show wrongly answered or skipped questions
+
+          const wrongUserLabel = userAnsIdx !== undefined ? `${labels[userAnsIdx]}: ${q.options[userAnsIdx]}` : "Жауап берілмеді";
+          const correctLabel = `${labels[q.correct]}: ${q.options[q.correct]}`;
+
+          const card = document.createElement('div');
+          card.className = "bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3";
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full">
+                ${q.topicName}
+              </span>
+              <span class="text-xs text-slate-500">Сұрақ #${q.id}</span>
+            </div>
+
+            <p class="text-xs md:text-sm font-medium text-slate-100">${q.question}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+              <div class="p-2.5 rounded-lg bg-rose-950/40 border border-rose-500/30 text-rose-300">
+                <span class="font-bold block text-[10px] text-rose-400 uppercase tracking-wider">Сіздің жауабыңыз:</span>
+                ${wrongUserLabel}
+              </div>
+              <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
+                <span class="font-bold block text-[10px] text-emerald-400 uppercase tracking-wider">Дұрыс жауап:</span>
+                ${correctLabel}
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs text-slate-300 leading-relaxed">
+              <span class="font-bold text-brand-400 block mb-1 flex items-center gap-1">
+                <i class="fa-solid fa-lightbulb"></i> ҰБТ Дәріс Түсініктемесі:
+              </span>
+              ${q.explanation}
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+      }
+
+      openTheoryModal() {
+        document.getElementById('theoryModal').classList.remove('hidden');
+      }
+
+      closeTheoryModal() {
+        document.getElementById('theoryModal').classList.add('hidden');
+      }
+    }
+
+    // Initialize App
+    const app = new UNTBiologyApp();
+    window.onload = () => {
+      app.init();
+    };
+  </script>
+</body>
+</html>
